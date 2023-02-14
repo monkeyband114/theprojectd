@@ -27,7 +27,10 @@ class Student(models.Model):
     midle_name = models.CharField(max_length=100)
     basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True )
     gender = models.CharField(max_length=50, choices=gen_chices)
-    parentS_name = models.CharField(max_length=50, default='john')
+    fathers_name = models.CharField(max_length=50, default='john')
+    Mothers_name = models.CharField(max_length=50, default='janet')
+    status = models.BooleanField()
+    
     
     def __str__(self) -> str:
         return self.first_name
