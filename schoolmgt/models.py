@@ -1,7 +1,25 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from phonenumber_field.modelfields import PhoneNumberField
 
+gen_chices = (
+    ("male", "male"),
+    ("female", "female")
+)
 
+ROLE_CHOICES = ()
+
+class User(AbstractUser):
+    first_name=models.CharField(max_length=200, null=True)
+    last_name =models.CharField(max_length=200, null=True)
+    birth_day = models.DateField()
+    gender = models.CharField(max_length=50, choices=gen_chices)
+    email = models.EmailField()
+    phone_number = models.PhoneNumberField(null=False, blank=False, unique=True)
+    # avatar
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
 class SubjectB(models.Model):
     name = models.CharField(max_length=200)
     
@@ -15,10 +33,7 @@ class Basic(models.Model):
     def __str__(self) -> str:
         return self.basic_no
     
-gen_chices = (
-    ("male", "male"),
-    ("female", "female")
-)
+
 
 class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -40,7 +55,7 @@ class Teacher(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     midle_name = models.CharField(max_length=100)
-    basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True )
+    basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True)
     gender = models.CharField(max_length=50, choices=gen_chices)
     phone = models.CharField(max_length=16)
     

@@ -5,3 +5,5 @@ def home(request):
     context = {}
     
     return render(request, 'schoolmgt/index.html')
+
+
