@@ -7,15 +7,15 @@ gen_chices = (
     ("female", "female")
 )
 
-ROLE_CHOICES = ()
+# ROLE_CHOICES = ()
 
 class User(AbstractUser):
     first_name=models.CharField(max_length=200, null=True)
     last_name =models.CharField(max_length=200, null=True)
     birth_day = models.DateField()
     gender = models.CharField(max_length=50, choices=gen_chices)
-    email = models.EmailField()
-    phone_number = models.PhoneNumberField(null=False, blank=False, unique=True)
+    email = models.EmailField(unique=True)
+    phone_number = PhoneNumberField(null=False, blank=False, unique=True)
     # avatar
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -28,7 +28,7 @@ class SubjectB(models.Model):
 
 class Basic(models.Model):
     basic_no = models.CharField(max_length=50)
-    subjects = models.ManyToManyField(SubjectB, blank=True, null=True)
+    subjects = models.ManyToManyField(SubjectB, blank=True)
     
     def __str__(self) -> str:
         return self.basic_no
@@ -36,7 +36,7 @@ class Basic(models.Model):
 
 
 class Student(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     midle_name = models.CharField(max_length=100)
@@ -51,11 +51,11 @@ class Student(models.Model):
         return self.first_name
     
 class Teacher(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    teacher = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     midle_name = models.CharField(max_length=100)
-    basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True)
+    basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True)
     gender = models.CharField(max_length=50, choices=gen_chices)
     phone = models.CharField(max_length=16)
     

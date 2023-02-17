@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'schoolmgt.apps.SchoolmgtConfig',
 ]
 
+AUTH_USER_MODEL= 'schoolmgt.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
