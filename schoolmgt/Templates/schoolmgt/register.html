@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>AKKHOR | Admission Form</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.html" />
+    <!-- Normalize CSS -->
+    <link href="{% static 'css/normalize.css' %}" rel="stylesheet" />
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.html" />
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+    <!-- Fontawesome CSS -->
+    <link href="{% static 'css/all.min.css' %}" rel="stylesheet" />
+    <!-- Flaticon CSS -->
+    <link href="{% static 'css/flaticon.css' %}" rel="stylesheet" />
+    <!-- Animate CSS -->
+    <link href="{% static 'css/animate.min.css' %}" rel="stylesheet" />
+    <!-- Select 2 CSS -->
+    <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" />
+    <!-- Date Picker CSS -->
+    <link href="{% static 'css/datepicker.min.css' %}" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="{% static 'style1.css' %}" rel="stylesheet" />
+    <!-- Modernize js -->
+    <script src="{% static 'js/modernizr-3.6.0.min.js' %}"></script>
+  </head>
+  <body>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        {{ message }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card-body">
+      <div class="heading-layout1">
+        <div class="item-title">
+          <h3>Add New Students</h3>
+        </div>
+        <div class="dropdown">
+          <a
+            class="dropdown-toggle"
+            href="#"
+            role="button"
+            data-toggle="dropdown"
+            aria-expanded="false"
+            >...</a
+          >
+
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#"
+              ><i class="fas fa-times text-orange-red"></i>Close</a
+            >
+            <a class="dropdown-item" href="#"
+              ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a
+            >
+            <a class="dropdown-item" href="#"
+              ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a
+            >
+          </div>
+        </div>
+      </div>
+      <form class="new-added-form" data-select2-id="18" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          {% for field in form %}
+          <div class="col-xl-3 col-lg-6 col-12 form-group">
+            <label>{{field.label}}</label>
+            {{field}}
+          </div>
+          {% endfor %}
+
+          <!-- <div class="col-lg-6 col-12 form-group mg-t-30">
+            <label class="text-dark-medium"
+              >Upload Student Photo (150px X 150px)</label
+            >
+            <input type="file" class="form-control-file" />
+          </div> -->
+          <div class="col-12 form-group mg-t-8">
+            <button
+              type="submit"
+              class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
+              value="Register"
+            >
+              Register
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- jquery-->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <!-- Plugins js -->
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'js/bootstrap.min1.js' %}"></script>
+    <!-- Select 2 Js -->
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    <!-- Date Picker Js -->
+    <script src="{% static 'js/datepicker.min.js' %}"></script>
+    <!-- Scroll Up Js -->
+    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+    <!-- Custom Js -->
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>
