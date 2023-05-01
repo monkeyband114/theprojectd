@@ -1,8 +1,10 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+import uuid
 from django.utils.translation import gettext_lazy as _
-
+import random
+from django.db.models import Model
 from .managers import CustomUserManager
 # from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
@@ -17,6 +19,21 @@ ROLE_CHOICES = (
     ("teacher", "teacher"),
     ("student", "student"),
 )
+
+ACESSMENT = (
+    ("1st C.A", "1st C.A"),
+    ("2nd C.A", "2nd C.A"),
+    ("Exams", "Exams"),
+)
+
+SUBGECTBS = (
+    ("English Language", "English Language"),
+    ("Mathematics", "Mathematics"),
+    ("C.R.S", "C.R.S"),
+    ("History", "History"),
+    ("Basic Science", "Basic Technology"),
+)
+
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -56,12 +73,8 @@ class Basic(models.Model):
         return self.basic_no
     
 
-
 class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    midle_name = models.CharField(max_length=100)
     basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True )
     birthday = models.DateField()
     gender = models.CharField(max_length=50, choices=gen_chices)
@@ -71,23 +84,33 @@ class Student(models.Model):
     
     
     def __str__(self) -> str:
-        return self.first_name
+        return f"{self.user.first_name} {self.user.last_name}"
+    
+    
     
 class Teacher(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    midle_name = models.CharField(max_length=100, blank=True)
+    # midle_name = models.CharField(max_length=100, blank=True)
     basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True)
     salary = models.IntegerField(blank=True, null=True)
-    # date_birth
+    # subject = models.ManyToManyField(SubjectB, related_name='Subject', blank=True)
+    address = models.CharField(max_length=100,  blank=True, null=True)
+    unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
+    
+    
+    
+    
+    
     def __str__(self) -> str:
-        return self.first_name
+        return self.user.first_name
+    
 
     
 
     
 class Fees(models.Model):
     basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True)
-    Fee = models.IntegerField()
+    Fee = models.IntegerField() 
     
 
 class Attendance(models.Model):
@@ -95,3 +118,15 @@ class Attendance(models.Model):
     date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+
+
+class Catestexam(models.Model):
+    test_type = models.CharField(max_length=50, choices=ACESSMENT)
+    subject = models.CharField(max_length=50, choices=SUBGECTBS)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
+    test_score = models.IntegerField( blank=False)
+    
+    def __str__(self) -> str:
+        return f"{self.test_type} for {self.student.user.first_name}"
+    
+    

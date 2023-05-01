@@ -3,13 +3,15 @@ from django.contrib import messages
 from .forms import MyUserStartForm
 from django.views.decorators.csrf import csrf_protect 
 from django.contrib.auth import authenticate, login, logout
-from . models import User, Student
+from . models import User, Student, Teacher
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def home(request):
     context = {}
     
     return render(request, 'schoolmgt/index.html')
-
+    
 def loginpage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -31,12 +33,14 @@ def loginpage(request):
                 if user.is_approved == False:
                     return redirect('awating')
                 else:
-                    return redirect('teacher')
+                    url = reverse('teacher', kwargs={'pk': request.user.id})
+                    return HttpResponseRedirect(url)
             elif user.role == 'student':
                 if user.is_approved == False:
                     return redirect('awating')
                 else:
-                    return redirect('student')
+                    url = reverse('student', kwargs={'pk': request.user.id})
+                    return HttpResponseRedirect(url)
             else:
                 return redirect('home')
         else:
@@ -46,17 +50,38 @@ def loginpage(request):
     context= {}
     return render(request, 'schoolmgt/login_hm.html', context)
 
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
+
+
+
 def awaitingPage(request):
     
     return render(request, 'schoolmgt/awating.html')
-
-def teacherPage(request):
     
-    context ={}
+
+def createProfle(request):
+    
+    return render(request, 'schoolmgt/create_profile.html')
+
+def teacherPage(request, pk):
+    user = User.objects.get(id=pk)
+    user_name = request.user.first_name
+    if not Teacher.objects.filter(user=user).exists():
+        return redirect('profile')
+    else:
+        teacher = Teacher.objects.get(user=user)
+        print(user)
+        print(teacher)
+    
+    context ={'teacher':teacher, 'user':user}
     return render(request, 'schoolmgt/teacherpage.html', context)
 
 
-def studentPage(request):
+def studentPage(request, pk):
     
     context ={}
     return render(request, 'schoolmgt/student_page.html', context)
@@ -76,8 +101,8 @@ def registerUser(request):
             # user.last_name = user.last_name.lower()
             user.save()
             print('done')
-            login(request, user)
-            return redirect('home')
+            # login(request, user)
+            return redirect('login')
         else:
             messages.error(request, 'An error has occored')
     
