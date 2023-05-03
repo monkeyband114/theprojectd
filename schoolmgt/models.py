@@ -93,12 +93,12 @@ class Teacher(models.Model):
     # midle_name = models.CharField(max_length=100, blank=True)
     basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True)
     salary = models.IntegerField(blank=True, null=True)
-    # subject = models.ManyToManyField(SubjectB, related_name='Subject', blank=True)
+    subject = models.ManyToManyField(SubjectB, related_name='Subject', blank=True)
     address = models.CharField(max_length=100,  blank=True, null=True)
+    qualifications = models.CharField(max_length=100, blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
+    bio = models.TextField(max_length=400, blank=True)
     unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
-    
-    
-    
     
     
     def __str__(self) -> str:
@@ -127,6 +127,6 @@ class Catestexam(models.Model):
     test_score = models.IntegerField( blank=False)
     
     def __str__(self) -> str:
-        return f"{self.test_type} for {self.student.user.first_name}"
+        return f"{self.test_type} for {self.student.user.first_name} in {self.subject}"
     
     

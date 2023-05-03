@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', views.logoutUser, name="logout"),
     path('awating/', views.awaitingPage, name='awating'),
     path('createpro/', views.createProfle, name='profile'),
+    path('create-teacher/', views.teacherProfleAdd, name="teacher-add"),
     path('studentpage/<str:pk>/', views.studentPage, name='student'),
     path('teacherpage/<str:pk>/', views.teacherPage, name='teacher'),
 ]

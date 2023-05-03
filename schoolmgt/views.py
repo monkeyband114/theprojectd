@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .forms import MyUserStartForm
 from django.views.decorators.csrf import csrf_protect 
 from django.contrib.auth import authenticate, login, logout
@@ -107,3 +108,28 @@ def registerUser(request):
             messages.error(request, 'An error has occored')
     
     return render(request, 'schoolmgt/register.html',  {'form':form})
+
+
+@login_required(login_url='login')
+def teacherProfleAdd(request):
+    user = request.user
+    print(user)
+    if request.method == "POST":
+        Teacher.objects.create(
+            user = user,
+            address = request.POST.get('address'),
+            qualifications = request.POST.get('qualifications'),
+            birthday = request.POST.get('date_of_birth'),
+            bio = request.POST.get('bio'),
+        )
+        
+        url = reverse('teacher', kwargs={'pk': request.user.id})
+        return HttpResponseRedirect(url)
+    
+    context = {}
+    return render(request, 'schoolmgt/teacher_form.html', context)
+
+    
+        
+        
+    
