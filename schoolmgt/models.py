@@ -15,6 +15,7 @@ gen_chices = (
     ("female", "female")
 )
 
+
 ROLE_CHOICES = (
     ("teacher", "teacher"),
     ("student", "student"),
@@ -26,13 +27,6 @@ ACESSMENT = (
     ("Exams", "Exams"),
 )
 
-SUBGECTBS = (
-    ("English Language", "English Language"),
-    ("Mathematics", "Mathematics"),
-    ("C.R.S", "C.R.S"),
-    ("History", "History"),
-    ("Basic Science", "Basic Technology"),
-)
 
 
 
@@ -57,8 +51,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
     
-    
-    
 class SubjectB(models.Model):
     name = models.CharField(max_length=200)
     
@@ -67,7 +59,6 @@ class SubjectB(models.Model):
 
 class Basic(models.Model):
     basic_no = models.CharField(max_length=50)
-    subjects = models.ManyToManyField(SubjectB, blank=True)
     
     def __str__(self) -> str:
         return self.basic_no
@@ -75,9 +66,9 @@ class Basic(models.Model):
 
 class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True )
+    basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True )
     birthday = models.DateField()
-    gender = models.CharField(max_length=50, choices=gen_chices)
+    address= models.CharField(max_length=120, blank=True, null=True)
     fathers_name = models.CharField(max_length=50, default='john')
     Mothers_name = models.CharField(max_length=50, default='janet')
     status = models.BooleanField()
@@ -90,7 +81,7 @@ class Student(models.Model):
     
 class Teacher(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    # midle_name = models.CharField(max_length=100, blank=True)
+    #midle_name = models.CharField(max_length=100, blank=True)
     basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True)
     salary = models.IntegerField(blank=True, null=True)
     subject = models.ManyToManyField(SubjectB, related_name='Subject', blank=True)
@@ -103,8 +94,6 @@ class Teacher(models.Model):
     
     def __str__(self) -> str:
         return self.user.first_name
-    
-
     
 
     
@@ -122,9 +111,10 @@ class Attendance(models.Model):
 
 class Catestexam(models.Model):
     test_type = models.CharField(max_length=50, choices=ACESSMENT)
-    subject = models.CharField(max_length=50, choices=SUBGECTBS)
+    subject = models.ForeignKey(SubjectB, related_name='subject', on_delete=models.CASCADE, blank=False)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
-    test_score = models.IntegerField( blank=False)
+    test_score = models.IntegerField(blank=False)
+    
     
     def __str__(self) -> str:
         return f"{self.test_type} for {self.student.user.first_name} in {self.subject}"

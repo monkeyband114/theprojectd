@@ -60,7 +60,19 @@ def logoutUser(request):
 
 
 def awaitingPage(request):
-    
+    user = request.user 
+    try:
+        if user.is_approved == True & user.role == 'teacher':
+            url = reverse('teacher', kwargs={'pk': request.user.id})
+            return HttpResponseRedirect(url)
+        
+        elif user.is_approved == True & user.role == 'student':
+             url = reverse('student', kwargs={'pk': request.user.id})
+             return HttpResponseRedirect(url)
+    except:
+        messages.error(request, 'Account still pending')
+
+        
     return render(request, 'schoolmgt/awating.html')
     
 
@@ -69,17 +81,26 @@ def createProfle(request):
     return render(request, 'schoolmgt/create_profile.html')
 
 def teacherPage(request, pk):
+    user = request.user
     user = User.objects.get(id=pk)
-    user_name = request.user.first_name
+    teacher = Teacher.objects.get(user=user)
+    basic = teacher.basic
+    students = Student.objects.all().filter(basic=basic)
+    
     if not Teacher.objects.filter(user=user).exists():
         return redirect('profile')
     else:
         teacher = Teacher.objects.get(user=user)
-        print(user)
-        print(teacher)
     
-    context ={'teacher':teacher, 'user':user}
+    
+    context ={'teacher':teacher, 'user':user, 'basic':basic, 'students':students}
     return render(request, 'schoolmgt/teacherpage.html', context)
+
+
+def teacherDetails(request):
+    
+    context={}
+    return render(request, 'schoolmgt/teacher_details.html', context)
 
 
 def studentPage(request, pk):
@@ -128,6 +149,8 @@ def teacherProfleAdd(request):
     
     context = {}
     return render(request, 'schoolmgt/teacher_form.html', context)
+
+
 
     
         
