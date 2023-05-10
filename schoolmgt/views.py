@@ -4,14 +4,42 @@ from django.contrib.auth.decorators import login_required
 from .forms import MyUserStartForm
 from django.views.decorators.csrf import csrf_protect 
 from django.contrib.auth import authenticate, login, logout
-from . models import User, Student, Teacher
+from . models import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import matplotlib.pyplot as plt
+import io
+import base64
+import urllib, base64
+import os
+
+
+
+def generate_pie_chart(data, basic):
+    labels = ['Male', 'Female']
+    sizes = [data['male'], data['female']]
+    colors = ['lightblue', 'pink']
+    plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+    plt.axis('equal')
+    plt.title('Male vs. Female Students')
+    plt.legend(title='Gender', loc='best')
+    plt.tight_layout()
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_data = buffer.getvalue()
+    buffer.close()
+
+
+
+
 
 def home(request):
     context = {}
     
     return render(request, 'schoolmgt/index.html')
+
+
     
 def loginpage(request):
     page = 'login'
@@ -55,13 +83,13 @@ def loginpage(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('home')
+    return redirect('home') 
 
 
 
 def awaitingPage(request):
     user = request.user 
-    try:
+    try: 
         if user.is_approved == True & user.role == 'teacher':
             url = reverse('teacher', kwargs={'pk': request.user.id})
             return HttpResponseRedirect(url)
@@ -82,7 +110,10 @@ def createProfle(request):
 
 def teacherPage(request, pk):
     user = request.user
-    user = User.objects.get(id=pk)
+    genders = user.gender
+    male_count = 0
+    female_count = 0
+    users = User.objects.get(id=pk)
     teacher = Teacher.objects.get(user=user)
     basic = teacher.basic
     students = Student.objects.all().filter(basic=basic)
@@ -92,8 +123,21 @@ def teacherPage(request, pk):
     else:
         teacher = Teacher.objects.get(user=user)
     
+    for student in students: 
+         if student.user.gender == 'male':
+             male_count = male_count + 1
+         else:
+              female_count = female_count + 1
+
+            
     
-    context ={'teacher':teacher, 'user':user, 'basic':basic, 'students':students}
+    print(male_count)
+    data = {
+        'male': male_count,
+        'female': female_count
+    }
+    
+    context ={'teacher':teacher, 'user':users, 'basic':basic, 'students':students, 'data':data}
     return render(request, 'schoolmgt/teacherpage.html', context)
 
 
@@ -101,6 +145,41 @@ def teacherDetails(request):
     
     context={}
     return render(request, 'schoolmgt/teacher_details.html', context)
+
+
+def cadetails(request, pk):
+    student = Student.objects.get(id=pk)
+    
+    
+    ca_exam = Catestexam.objects.all().filter(student=student)
+    
+    context = {'caexam':ca_exam, 'student':student}
+    return render(request, 'schoolmgt/ca_page.html', context)
+
+
+
+
+def caadd(request, pk):
+    student = Student.objects.get(id=pk)
+    stud = student.basic
+    teacher = Teacher.objects.get(basic=stud)
+    print(teacher)
+    subject = teacher.subject.all()
+    
+    print(subject)
+    if request.method == 'POST':
+        Catestexam.objects.create(
+            test_type = request.POST.get('test_type'),
+            subject = request.POST.get('subject'),
+            student = student,
+            test_score = request.POST.get('test_score'),
+        )
+        
+    context = {'student':student, 'subjects':subject}
+    return render(request, 'schoolmgt/addca.html', context)
+
+
+
 
 
 def studentPage(request, pk):
@@ -134,9 +213,10 @@ def registerUser(request):
 @login_required(login_url='login')
 def teacherProfleAdd(request):
     user = request.user
+    teachers = Teacher.objects.get(user=user)
     print(user)
     if request.method == "POST":
-        Teacher.objects.create(
+        Teacher.objects.update(
             user = user,
             address = request.POST.get('address'),
             qualifications = request.POST.get('qualifications'),
@@ -147,7 +227,7 @@ def teacherProfleAdd(request):
         url = reverse('teacher', kwargs={'pk': request.user.id})
         return HttpResponseRedirect(url)
     
-    context = {}
+    context = {'teacher':teachers}
     return render(request, 'schoolmgt/teacher_form.html', context)
 
 

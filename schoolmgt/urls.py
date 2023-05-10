@@ -9,8 +9,9 @@ urlpatterns = [
     path('awating/', views.awaitingPage, name='awating'),
     path('createpro/', views.createProfle, name='profile'),
     path('teaher-details', views.teacherDetails, name='teacher-details'),
+    path('ca-add/<str:pk>', views.caadd, name='caadd'),
     path('create-teacher/', views.teacherProfleAdd, name="teacher-add"),
     path('studentpage/<str:pk>/', views.studentPage, name='student'),
     path('teacherpage/<str:pk>/', views.teacherPage, name='teacher'),
-    
+    path('capage/<str:pk>/', views.cadetails, name='capage'),
 ]

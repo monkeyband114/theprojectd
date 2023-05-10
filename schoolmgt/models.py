@@ -60,6 +60,7 @@ class SubjectB(models.Model):
 class Basic(models.Model):
     basic_no = models.CharField(max_length=50)
     
+    
     def __str__(self) -> str:
         return self.basic_no
     
@@ -76,6 +77,17 @@ class Student(models.Model):
     
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"
+    
+    
+    def get_gender(self):
+        genders = self.user_set.all()
+        
+        return genders
+
+    
+class Charts(models.Model):
+        basic = basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True )
+        image = models.ImageField(null=True, default="testimon.png")
     
     
     

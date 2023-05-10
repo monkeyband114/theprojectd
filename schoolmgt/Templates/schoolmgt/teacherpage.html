@@ -4,7 +4,7 @@
 <!-- frepo on the move -->
 {% block content %}
 <!-- add code here  -->
-<!-- <div id="preloader"></div> -->
+<div id="preloader"></div>
 <!-- Preloader End Here -->
 <div id="wrapper" class="wrapper bg-ash">
   <!-- Header Menu Area Start Here -->
@@ -120,21 +120,19 @@
                   </div>
                 </div>
               </div>
-              <div class="doughnut-chart-wrap">
-                <canvas
-                  id="student-doughnut-chart"
-                  width="100"
-                  height="270"
-                ></canvas>
+              <div class="">
+                <canvas id="" width="150" height="300">
+                  <img src="{{pie.image.url}}" alt="" />
+                </canvas>
               </div>
               <div class="student-report">
                 <div class="student-count pseudo-bg-blue">
                   <h4 class="item-title">Female Students</h4>
-                  <div class="item-number">10,500</div>
+                  <div class="item-number">{{data.female}}</div>
                 </div>
                 <div class="student-count pseudo-bg-yellow">
                   <h4 class="item-title">Male Students</h4>
-                  <div class="item-number">24,500</div>
+                  <div class="item-number">{{data.male}}</div>
                 </div>
               </div>
             </div>
@@ -381,7 +379,9 @@
                                 ><i class="fas fa-times text-orange-red"></i
                                 >Close</a
                               >
-                              <a class="dropdown-item" href="#"
+                              <a
+                                class="dropdown-item"
+                                href="{% url 'capage' student.id %}"
                                 ><i
                                   class="fas fa-cogs text-dark-pastel-green"
                                 ></i
