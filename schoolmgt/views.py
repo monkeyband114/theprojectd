@@ -152,7 +152,19 @@ def cadetails(request, pk):
     
     
     ca_exam = Catestexam.objects.all().filter(student=student)
+    all_ass = Catestexam.objects.filter(student=student)
     
+    calc_total = []
+    total = 0
+    for tot in all_ass:
+       total += tot.test_score
+    print(total)
+    Total.objects.create(
+        student=student,
+        subject= tot.subject,
+        total = total,
+    )
+        
     context = {'caexam':ca_exam, 'student':student}
     return render(request, 'schoolmgt/ca_page.html', context)
 
@@ -164,17 +176,24 @@ def caadd(request, pk):
     stud = student.basic
     teacher = Teacher.objects.get(basic=stud)
     print(teacher)
-    subject = teacher.subject.all()
+    sub = teacher.subject.all()
+    print(sub)
     
-    print(subject)
+    subject = []
+    
+    for subs in sub:
+        subject += SubjectB.objects.filter(name=subs)
+    
+    
     if request.method == 'POST':
         Catestexam.objects.create(
             test_type = request.POST.get('test_type'),
-            subject = request.POST.get('subject'),
+            subject = SubjectB.objects.get(id=request.POST.get('subject')),
             student = student,
             test_score = request.POST.get('test_score'),
         )
-        
+
+        return redirect('capage', pk=student.id)
     context = {'student':student, 'subjects':subject}
     return render(request, 'schoolmgt/addca.html', context)
 

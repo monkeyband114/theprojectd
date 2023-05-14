@@ -130,5 +130,16 @@ class Catestexam(models.Model):
     
     def __str__(self) -> str:
         return f"{self.test_type} for {self.student.user.first_name} in {self.subject}"
+
+class Total(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
+    subject = models.ForeignKey(SubjectB, on_delete=models.CASCADE, blank=False)
+    total = models.IntegerField(blank=False)
     
+   
+    
+class Results(models.Model):
+    Student=models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
+    result_score = models.IntegerField(blank=False, null=False)
+   
     

@@ -62,10 +62,10 @@
               <div class="col-xl-3 col-lg-6 col-12 form-group">
                 <label>Test Type</label>
                 <select name="test_type" class="select2">
-                  <option value="">Please Select Gender *</option>
-                  <option value="1">1st C.A</option>
-                  <option value="2">2nd C.A</option>
-                  <option value="3">Exams</option>
+                  <option value="">Please Select Test Type *</option>
+                  <option value="1st C.A">1st C.A</option>
+                  <option value="2nd C.A">2nd C.A</option>
+                  <option value="Exams">Exams</option>
                 </select>
               </div>
               <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -82,9 +82,7 @@
                 <select name="subject" class="select2">
                   <option value="">Please Select Subject *</option>
                   {% for subject in subjects %}
-                  <option value="{{subject.id}}:{{subject.name}}">
-                    {{subject.name}}
-                  </option>
+                  <option value="{{subject.id}}">{{subject.name}}</option>
                   {% endfor %}
                 </select>
               </div>
