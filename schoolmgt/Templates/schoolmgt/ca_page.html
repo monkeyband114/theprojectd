@@ -282,7 +282,12 @@
           <div class="col-6">
             <div class="item-content">
               <a href="#"><div class="item-title">Result</div></a>
-              <div class="item-number"></div>
+              {% for key, value in total.items %}
+              <div class="item-number">
+                <h4 style="color: rgb(22, 7, 183)">{{key}}</h4>
+                <h6>{{value}}</h6>
+              </div>
+              {% endfor %}
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ from . models import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import matplotlib.pyplot as plt
+from django.db.models import Sum, Avg
 import io
 import base64
 import urllib, base64
@@ -115,6 +116,7 @@ def teacherPage(request, pk):
     female_count = 0
     users = User.objects.get(id=pk)
     teacher = Teacher.objects.get(user=user)
+    subject = teacher.subject.all()
     basic = teacher.basic
     students = Student.objects.all().filter(basic=basic)
     
@@ -137,7 +139,7 @@ def teacherPage(request, pk):
         'female': female_count
     }
     
-    context ={'teacher':teacher, 'user':users, 'basic':basic, 'students':students, 'data':data}
+    context ={'teacher':teacher, 'user':users, 'basic':basic, 'students':students, 'data':data, 'subject': subject}
     return render(request, 'schoolmgt/teacherpage.html', context)
 
 
@@ -148,29 +150,42 @@ def teacherDetails(request):
 
 
 def cadetails(request, pk):
+    user = request.user
     student = Student.objects.get(id=pk)
-    
-    
-    ca_exam = Catestexam.objects.all().filter(student=student)
     all_ass = Catestexam.objects.filter(student=student)
+    teacher = Teacher.objects.get(user=user)
+    subjects = teacher.subject.all()
     
-    calc_total = []
-    total = 0
-    for tot in all_ass:
-       total += tot.test_score
+    total = {}
+    
+    for subject in subjects:
+        ca_exam = Catestexam.objects.filter(student=student, subject=subject).aggregate(Sum("test_score"))
+        print(ca_exam)
+        subs = subject.name
+        total[subs] = ca_exam['test_score__sum']
+    
+    
+    
     print(total)
-    Total.objects.create(
-        student=student,
-        subject= tot.subject,
-        total = total,
-    )
-        
-    context = {'caexam':ca_exam, 'student':student}
+    
+    context = {'caexam':all_ass, 'student':student, 'total':total}
     return render(request, 'schoolmgt/ca_page.html', context)
 
 
-
-
+def calculate_results(request, pk):
+    
+    student = Student.objects.get(id=pk)
+    all_ass = Catestexam.objects.filter(student=student)
+    subjects = student.subjects.name
+    
+    total = 0
+    
+    for ass in all_ass:
+        for subject in subjects:
+            ca_exam = Catestexam.objects.filter(student=student, subject=subject)
+            total = ca_exam.aggregate(sum('test_score'))
+    
+    
 def caadd(request, pk):
     student = Student.objects.get(id=pk)
     stud = student.basic
