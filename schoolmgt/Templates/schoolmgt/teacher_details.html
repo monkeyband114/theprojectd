@@ -66,7 +66,9 @@
             </div>
             <div class="item-content">
               <div class="header-inline item-header">
-                <h3 class="text-dark-medium font-medium">Steven Johnson</h3>
+                <h3 class="text-dark-medium font-medium">
+                  {{teacher.user.first_name}} {{teacher.user.last_name}}
+                </h3>
                 <div class="header-elements">
                   <ul>
                     <li>
@@ -75,7 +77,9 @@
                       ></a>
                     </li>
                     <li>
-                      <a href="#"><i class="fas fa-print"></i></a>
+                      <a onclick="window.print()"
+                        ><i class="fas fa-print"></i
+                      ></a>
                     </li>
                     <li>
                       <a href="#"><i class="fas fa-download"></i></a>
@@ -83,72 +87,62 @@
                   </ul>
                 </div>
               </div>
-              <p>
-                Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen
-                sodale word moun taiery.Aliquam erat volutpaturabiene natis
-                massa sedde sodale word moun taiery.
-              </p>
+              <p>{{teacher.bio}}</p>
               <div class="info-table table-responsive">
                 <table class="table text-nowrap">
                   <tbody>
                     <tr>
                       <td>Name:</td>
                       <td class="font-medium text-dark-medium">
-                        Steven Johnson
+                        {{teacher.user.first_name}} {{teacher.user.last_name}}
                       </td>
                     </tr>
                     <tr>
                       <td>Gender:</td>
-                      <td class="font-medium text-dark-medium">Male</td>
-                    </tr>
-                    <tr>
-                      <td>Father Name:</td>
-                      <td class="font-medium text-dark-medium">Steve Jones</td>
-                    </tr>
-                    <tr>
-                      <td>Mother Name:</td>
-                      <td class="font-medium text-dark-medium">Naomi Rose</td>
-                    </tr>
-                    <tr>
-                      <td>Religion:</td>
-                      <td class="font-medium text-dark-medium">Islam</td>
+                      <td class="font-medium text-dark-medium">
+                        {{teacher.user.gender}}
+                      </td>
                     </tr>
                     <tr>
                       <td>Joining Date:</td>
-                      <td class="font-medium text-dark-medium">07.08.2016</td>
+                      <td class="font-medium text-dark-medium">
+                        {{teacher.user.date_joined}}
+                      </td>
                     </tr>
                     <tr>
                       <td>E-mail:</td>
                       <td class="font-medium text-dark-medium">
-                        stevenjohnson@gmail.com
+                        {{teacher.user.email}}
                       </td>
                     </tr>
                     <tr>
-                      <td>Subject:</td>
-                      <td class="font-medium text-dark-medium">English</td>
-                    </tr>
-                    <tr>
                       <td>Class:</td>
-                      <td class="font-medium text-dark-medium">2</td>
+                      <td class="font-medium text-dark-medium">
+                        {{teacher.basic}}
+                      </td>
                     </tr>
                     <tr>
-                      <td>Section:</td>
-                      <td class="font-medium text-dark-medium">Pink</td>
+                      <td>Qualification:</td>
+                      <td class="font-medium text-dark-medium">
+                        {{teacher.qualifications}}
+                      </td>
                     </tr>
                     <tr>
                       <td>ID No:</td>
-                      <td class="font-medium text-dark-medium">10005</td>
+                      <td class="font-medium text-dark-medium">
+                        {{teacher.unique_id }}
+                      </td>
                     </tr>
                     <tr>
                       <td>Address:</td>
                       <td class="font-medium text-dark-medium">
-                        House #10, Road #6, Australia
+                        {{teacher.address}}
                       </td>
                     </tr>
                     <tr>
                       <td>Phone:</td>
                       <td class="font-medium text-dark-medium">
-                        + 88 98568888418
+                        {{teacher.user.phone_number}}
                       </td>
                     </tr>
                   </tbody>

@@ -10,9 +10,7 @@ from django.urls import reverse
 import matplotlib.pyplot as plt
 from django.db.models import Sum, Avg
 import io
-import base64
-import urllib, base64
-import os
+import datetime
 
 
 
@@ -144,8 +142,11 @@ def teacherPage(request, pk):
 
 
 def teacherDetails(request):
+    user = request.user
+    teacher = Teacher.objects.get(user=user)
     
-    context={}
+    
+    context={'teacher':teacher}
     return render(request, 'schoolmgt/teacher_details.html', context)
 
 
@@ -201,13 +202,16 @@ def caadd(request, pk):
     
     
     if request.method == 'POST':
-        Catestexam.objects.create(
+        # cat = Catestexam.objects.get(subject=SubjectB.objects.get(id=request.POST.get('subject')), test_type=request.POST.get('test_type'))
+        # print(cat)
+        # score = cat.test_score
+        obj, created = Catestexam.objects.update_or_create(
             test_type = request.POST.get('test_type'),
             subject = SubjectB.objects.get(id=request.POST.get('subject')),
             student = student,
-            test_score = request.POST.get('test_score'),
+            defaults = {'test_score': request.POST.get('test_score')}
         )
-
+        
         return redirect('capage', pk=student.id)
     context = {'student':student, 'subjects':subject}
     return render(request, 'schoolmgt/addca.html', context)
@@ -236,7 +240,6 @@ def registerUser(request):
             # user.last_name = user.last_name.lower()
             user.save()
             print('done')
-            # login(request, user)
             return redirect('login')
         else:
             messages.error(request, 'An error has occored')
@@ -250,11 +253,13 @@ def teacherProfleAdd(request):
     teachers = Teacher.objects.get(user=user)
     print(user)
     if request.method == "POST":
-        Teacher.objects.update(
-            user = user,
+        date = request.POST.get('date_of_birth')
+        format_date = date_converter(date)
+        print(format_date)
+        Teacher.objects.filter(user=user).update(
             address = request.POST.get('address'),
             qualifications = request.POST.get('qualifications'),
-            birthday = request.POST.get('date_of_birth'),
+            birthday = format_date,
             bio = request.POST.get('bio'),
         )
         
@@ -269,4 +274,16 @@ def teacherProfleAdd(request):
     
         
         
+def date_converter(date_str):
+  # Parse the date string into a datetime object.
+  try:
+    datetime_obj = datetime.datetime.strptime(date_str, "%m/%d/%Y")
+  except ValueError:
+    try:
+      datetime_obj = datetime.datetime.strptime(date_str, "%B %d, %Y")
+    except ValueError:
+      raise ValueError("Invalid date string: {}".format(date_str))
+
+  # Convert the datetime object to a string in yyyy-mm-dd format.
+  return datetime_obj.strftime("%Y-%m-%d")
     

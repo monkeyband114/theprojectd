@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
     
     def __str__(self):
-        return self.email
+        return f"{self.first_name} {self.last_name} : {self.role}, is_approved: {self.is_approved}"
     
 class SubjectB(models.Model):
     name = models.CharField(max_length=200)
@@ -73,7 +73,7 @@ class Student(models.Model):
     fathers_name = models.CharField(max_length=50, default='john')
     Mothers_name = models.CharField(max_length=50, default='janet')
     status = models.BooleanField()
-    
+    image = models.ImageField(null=True, default="testimon.png")
     
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"
@@ -101,6 +101,7 @@ class Teacher(models.Model):
     qualifications = models.CharField(max_length=100, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
     bio = models.TextField(max_length=400, blank=True)
+    image = models.ImageField(null=True, default="testimon.png")
     unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
     
     

@@ -20,7 +20,10 @@
         <ul>
           <li>
             {% if request.user.role == 'teacher' %}
-            <a href="{% url 'teacher' user.id %}">Accessment Details</a>
+            <a href="{% url 'teacher' user.id %}"
+              >Accessment Details for {{student.user.first_name}}
+              {{student.user.last_name}}</a
+            >
             {% else %}
             <a href="{% url 'student' user.id %}">Accessment Details</a>
             {% endif %}
@@ -293,6 +296,7 @@
         </div>
       </div>
       <div class="m-4 justify-center align-items-center">
+        {% if request.user.role == 'teacher' %}
         <a
           href="{% url 'caadd' student.id %}"
           type="button"
@@ -301,6 +305,9 @@
         >
           Add Test and Exams
         </a>
+        {% else %}
+        <br />
+        {% endif %}
       </div>
 
       <!-- Student Table Area End Here -->

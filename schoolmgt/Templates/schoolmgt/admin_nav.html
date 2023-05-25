@@ -2,8 +2,8 @@
 <div class="navbar navbar-expand-md header-menu-one bg-light">
   <div class="nav-bar-header-one">
     <div class="header-logo">
-      <a href="index.html">
-        <img src="img/logo.png" alt="logo" />
+      <a href="index.html" style="max-width: 40px; max-height: 50px">
+        <img src="{% static 'images/firstlogo.png' %}" alt="logo" />
       </a>
     </div>
     <div class="toggle-button sidebar-toggle">
@@ -58,15 +58,15 @@
         >
           <div class="admin-title">
             <h5 class="item-title">{{teacher.name}}</h5>
-            <span>Admin</span>
+            <span>{{teacher.user.first_name}}</span>
           </div>
           <div class="admin-img">
-            <img src="img/figure/admin.jpg" alt="Admin" />
+            <img src="img/figure/admin.jpg" alt="{{teacher.user.last_name}}" />
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
           <div class="item-header">
-            <h6 class="item-title">{{teacher.name}}</h6>
+            <h6 class="item-title">{{teacher.user.first_name}}</h6>
           </div>
           <div class="item-content">
             <ul class="settings-list">

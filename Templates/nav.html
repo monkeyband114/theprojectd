@@ -66,6 +66,15 @@
                       {% else %}
                       <a
                         class="nav-link color-grey-hover"
+                        href="{% url 'student' user.id %}"
+                        >{{request.user.first_name}}
+                        {{request.user.last_name}}</a
+                      >
+                      {% endif %}
+                      <!-- end of cheack -->
+                      {% else %}
+                      <a
+                        class="nav-link color-grey-hover"
                         href="{% url 'login' %}"
                         >Login</a
                       >
