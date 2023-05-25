@@ -109,7 +109,6 @@ def createProfle(request):
 
 def teacherPage(request, pk):
     user = request.user
-    genders = user.gender
     male_count = 0
     female_count = 0
     users = User.objects.get(id=pk)
@@ -222,6 +221,7 @@ def caadd(request, pk):
 
 def studentPage(request, pk):
     
+    
     context ={}
     return render(request, 'schoolmgt/student_page.html', context)
 
@@ -277,7 +277,7 @@ def teacherProfleAdd(request):
 def date_converter(date_str):
   # Parse the date string into a datetime object.
   try:
-    datetime_obj = datetime.datetime.strptime(date_str, "%m/%d/%Y")
+    datetime_obj = datetime.datetime.strptime(date_str, "%d/%m/%Y")
   except ValueError:
     try:
       datetime_obj = datetime.datetime.strptime(date_str, "%B %d, %Y")

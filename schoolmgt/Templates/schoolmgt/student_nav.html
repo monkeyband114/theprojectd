@@ -1,4 +1,5 @@
 {% load static %}
+
 <div class="navbar navbar-expand-md header-menu-one bg-light">
   <div class="nav-bar-header-one">
     <div class="header-logo">
@@ -57,16 +58,16 @@
           aria-expanded="false"
         >
           <div class="admin-title">
-            <h5 class="item-title">{{teacher.name}}</h5>
-            <span>{{teacher.user.first_name}}</span>
+            <h5 class="item-title">Stevne Zone</h5>
+            <span>Admin</span>
           </div>
           <div class="admin-img">
-            <img src="img/figure/admin.jpg" alt="{{teacher.user.last_name}}" />
+            <img src="img/figure/admin.jpg" alt="Admin" />
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
           <div class="item-header">
-            <h6 class="item-title">{{teacher.user.first_name}}</h6>
+            <h6 class="item-title">Steven Zone</h6>
           </div>
           <div class="item-content">
             <ul class="settings-list">
@@ -90,7 +91,7 @@
                 >
               </li>
               <li>
-                <a href="{% url 'logout' %}"
+                <a href="login.html"
                   ><i class="flaticon-turn-off"></i>Log Out</a
                 >
               </li>
@@ -229,22 +230,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </li>
-      <li class="navbar-item dropdown header-language">
-        <a
-          class="navbar-nav-link dropdown-toggle"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-expanded="false"
-          ><i class="fas fa-globe-americas"></i>EN</a
-        >
-        <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" href="#">English</a>
-          <a class="dropdown-item" href="#">Spanish</a>
-          <a class="dropdown-item" href="#">Franchis</a>
-          <a class="dropdown-item" href="#">Chiness</a>
         </div>
       </li>
     </ul>
