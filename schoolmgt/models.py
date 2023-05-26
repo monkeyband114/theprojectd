@@ -101,14 +101,12 @@ class Teacher(models.Model):
     qualifications = models.CharField(max_length=100, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
     bio = models.TextField(max_length=400, blank=True)
-    image = models.ImageField(null=True, default="testimon.png")
+    image = models.ImageField(null=True, default="testimon.png", upload_to="firststep")
     unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
     
     
     def __str__(self) -> str:
-        return self.user.first_name
-    
-
+        return f"{self.user.first_name} {self.image.url}"
     
 class Fees(models.Model):
     basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True)
@@ -137,7 +135,7 @@ class Total(models.Model):
     subject = models.ForeignKey(SubjectB, on_delete=models.CASCADE, blank=False)
     total = models.IntegerField(blank=False)
     
-   
+
     
 class Results(models.Model):
     Student=models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)

@@ -65,6 +65,17 @@
     <link rel="stylesheet" href="{% static 'style1.css' %}" rel="stylesheet" />
     <!-- Modernize js -->
     <script src="{% static 'js/modernizr-3.6.0.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+        });
+        calendar.render();
+      });
+    </script>
+    <script src="{% static 'js/Chart.umd.js' %}"></script>
   </head>
   <body>
     {% if messages %}
@@ -106,6 +117,8 @@
     <script src="{% static 'js/Chart.min.js' %}"></script>
     <!-- Custom Js -->
     <script src="{% static 'js/main1.js' %}"></script>
+    <!-- myjs.js -->
+    <script src="{% static 'js/myjs.js' %}"></script>
   </body>
 </html>
 

@@ -261,6 +261,7 @@ def teacherProfleAdd(request):
             qualifications = request.POST.get('qualifications'),
             birthday = format_date,
             bio = request.POST.get('bio'),
+            image = request.POST.get('image'),
         )
         
         url = reverse('teacher', kwargs={'pk': request.user.id})
