@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-@tei-0p91)rtv7)q&n%aw7ihxvch0+0)_cj0mnrd75qh!6ivaw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.146.210", "127.0.0.1"]
+
+
 
 
 # Application definition
@@ -80,8 +82,12 @@ WSGI_APPLICATION = 'Firststep.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'firststep', 
+        'HOST': 'localhost', 
+        'PORT': '5432',
+        'USER':'postgres',
+        'PASSWORD':'124456aa',
     }
 }
 

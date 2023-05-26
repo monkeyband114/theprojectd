@@ -98,7 +98,6 @@ def awaitingPage(request):
              return HttpResponseRedirect(url)
     except:
         messages.error(request, 'Account still pending')
-
         
     return render(request, 'schoolmgt/awating.html')
     
