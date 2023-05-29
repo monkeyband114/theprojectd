@@ -293,8 +293,17 @@ def studentPage(request, pk):
     return render(request, 'schoolmgt/student_page.html', context)
 
 
+@login_required(login_url='login')
+def studentProfileAdd(request):
+    
+    return render(request, 'schoolmgt/student_form.html')
+    
 
 
+def studentResult(request):
+    
+    
+    return render(request, 'schoolmgt/ca_page.html')
 
 
 
