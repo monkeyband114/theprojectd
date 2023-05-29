@@ -106,7 +106,7 @@ class Teacher(models.Model):
     
     
     def __str__(self) -> str:
-        return f"{self.user.first_name} {self.image.url}"
+        return f"{self.user.first_name} uploaded to: {self.image.url}"
     
 class Fees(models.Model):
     basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True)

@@ -60,8 +60,8 @@
             <h5 class="item-title">{{teacher.name}}</h5>
             <span>{{teacher.user.first_name}}</span>
           </div>
-          <div class="admin-img">
-            <img src="img/figure/admin.jpg" alt="{{teacher.user.last_name}}" />
+          <div style="width: 35px; height: 35px" class="admin-img">
+            <img src="{{teacher.image.url}}" alt="{{teacher.user.last_name}}" />
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
@@ -229,22 +229,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </li>
-      <li class="navbar-item dropdown header-language">
-        <a
-          class="navbar-nav-link dropdown-toggle"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-expanded="false"
-          ><i class="fas fa-globe-americas"></i>EN</a
-        >
-        <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" href="#">English</a>
-          <a class="dropdown-item" href="#">Spanish</a>
-          <a class="dropdown-item" href="#">Franchis</a>
-          <a class="dropdown-item" href="#">Chiness</a>
         </div>
       </li>
     </ul>

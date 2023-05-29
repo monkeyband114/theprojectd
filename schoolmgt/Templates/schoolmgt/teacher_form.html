@@ -55,7 +55,11 @@
               </div>
             </div>
           </div>
-          <form class="new-added-form" method="POST">
+          <form
+            class="new-added-form"
+            method="POST"
+            enctype="multipart/form-data"
+          >
             {% csrf_token %}
             <div class="row">
               <div class="col-xl-3 col-lg-6 col-12 form-group">

@@ -20,7 +20,23 @@
       <div class="breadcrumbs-area">
         <h3>Welcome {{teacher.user.first_name}} {{teacher.user.last_name}}</h3>
         <ul>
+          {% if teacher.basic == None %}
+          <li>
+            Class Not yet Assigned
+            <a
+              href="#"
+              style="
+                :hover {
+                  color: red;
+                }
+                cursor: pointer;
+              "
+              >Contact Admin</a
+            >
+          </li>
+          {% else %}
           <li>Teachers Dashboard for {{teacher.basic}}</li>
+          {% endif %}
         </ul>
       </div>
       <!-- Breadcubs Area End Here -->

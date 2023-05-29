@@ -13,6 +13,10 @@ import io
 import datetime
 
 
+def errorPage(request):
+    
+    return render(request, 'schoolmgt/404.html')
+
 
 def generate_pie_chart(data, basic):
     labels = ['Male', 'Female']
@@ -111,7 +115,11 @@ def teacherPage(request, pk):
     male_count = 0
     female_count = 0
     users = User.objects.get(id=pk)
-    teacher = Teacher.objects.get(user=user)
+    
+    teacher, obj = Teacher.objects.get_or_create(
+                user = user,
+            )
+    print(teacher.basic)
     subject = teacher.subject.all()
     basic = teacher.basic
     students = Student.objects.all().filter(basic=basic)
@@ -137,6 +145,8 @@ def teacherPage(request, pk):
     
     context ={'teacher':teacher, 'user':users, 'basic':basic, 'students':students, 'data':data, 'subject': subject}
     return render(request, 'schoolmgt/teacherpage.html', context)
+
+
 
 
 def teacherDetails(request):
@@ -260,7 +270,7 @@ def teacherProfleAdd(request):
             qualifications = request.POST.get('qualifications'),
             birthday = format_date,
             bio = request.POST.get('bio'),
-            image = request.POST.get('image'),
+            image = request.FILES['image'],
         )
         
         url = reverse('teacher', kwargs={'pk': request.user.id})
