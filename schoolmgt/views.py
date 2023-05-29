@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from django.db.models import Sum, Avg
 import io
 import datetime
+from .forms import UserImage
 
 
 def errorPage(request):
@@ -36,11 +37,30 @@ def generate_pie_chart(data, basic):
 
 
 
-
 def home(request):
     context = {}
     
     return render(request, 'schoolmgt/index.html')
+
+
+@csrf_protect
+def registerUser(request):
+    
+    form = MyUserStartForm()
+    
+    if request.method == 'POST':
+        form = MyUserStartForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            # user.first_name = user.first_name.lower()
+            # user.last_name = user.last_name.lower()
+            user.save()
+            print('done')
+            return redirect('login')
+        else:
+            messages.error(request, 'An error has occored')
+    
+    return render(request, 'schoolmgt/register.html',  {'form':form})
 
 
     
@@ -119,7 +139,6 @@ def teacherPage(request, pk):
     teacher, obj = Teacher.objects.get_or_create(
                 user = user,
             )
-    print(teacher.basic)
     subject = teacher.subject.all()
     basic = teacher.basic
     students = Student.objects.all().filter(basic=basic)
@@ -158,6 +177,43 @@ def teacherDetails(request):
     return render(request, 'schoolmgt/teacher_details.html', context)
 
 
+@login_required(login_url='login')
+def teacherProfleAdd(request):
+    user = request.user
+    teachers = Teacher.objects.get(user=user)
+    form = UserImage(instance=teachers)
+    print(user)
+    if request.method == "POST":
+        date = request.POST.get('date_of_birth')
+        format_date = date_converter(date)
+        form = UserImage(request.POST, request.FILES, instance=teachers)
+        
+        if form.is_valid():
+            form.save()
+            
+            imj_object = form.instance
+            
+            context = {'teacher':teachers, 'form':form, 'img_obj': imj_object}
+        else:
+            form = UserImage()
+            
+        
+        
+        Teacher.objects.filter(user=user).update(
+            address = request.POST.get('address'),
+            qualifications = request.POST.get('qualifications'),
+            birthday = format_date,
+            bio = request.POST.get('bio'),
+            
+        )
+        
+        return redirect('teacher-details')
+    
+    context = {'teacher':teachers, 'form':form}
+    return render(request, 'schoolmgt/teacher_form.html', context)
+
+
+
 def cadetails(request, pk):
     user = request.user
     student = Student.objects.get(id=pk)
@@ -177,7 +233,7 @@ def cadetails(request, pk):
     
     print(total)
     
-    context = {'caexam':all_ass, 'student':student, 'total':total}
+    context = {'caexam':all_ass, 'student':student, 'total':total, 'subjects': subjects}
     return render(request, 'schoolmgt/ca_page.html', context)
 
 
@@ -210,9 +266,6 @@ def caadd(request, pk):
     
     
     if request.method == 'POST':
-        # cat = Catestexam.objects.get(subject=SubjectB.objects.get(id=request.POST.get('subject')), test_type=request.POST.get('test_type'))
-        # print(cat)
-        # score = cat.test_score
         obj, created = Catestexam.objects.update_or_create(
             test_type = request.POST.get('test_type'),
             subject = SubjectB.objects.get(id=request.POST.get('subject')),
@@ -227,57 +280,22 @@ def caadd(request, pk):
 
 
 
-
+@login_required(login_url='login')
 def studentPage(request, pk):
+    user = request.user
+    student, obj = Student.objects.get_or_create(
+        user = user
+        
+    )
     
     
-    context ={}
+    context = {'student':student}
     return render(request, 'schoolmgt/student_page.html', context)
 
 
 
-@csrf_protect
-def registerUser(request):
-    
-    form = MyUserStartForm()
-    
-    if request.method == 'POST':
-        form = MyUserStartForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            # user.first_name = user.first_name.lower()
-            # user.last_name = user.last_name.lower()
-            user.save()
-            print('done')
-            return redirect('login')
-        else:
-            messages.error(request, 'An error has occored')
-    
-    return render(request, 'schoolmgt/register.html',  {'form':form})
 
 
-@login_required(login_url='login')
-def teacherProfleAdd(request):
-    user = request.user
-    teachers = Teacher.objects.get(user=user)
-    print(user)
-    if request.method == "POST":
-        date = request.POST.get('date_of_birth')
-        format_date = date_converter(date)
-        print(format_date)
-        Teacher.objects.filter(user=user).update(
-            address = request.POST.get('address'),
-            qualifications = request.POST.get('qualifications'),
-            birthday = format_date,
-            bio = request.POST.get('bio'),
-            image = request.FILES['image'],
-        )
-        
-        url = reverse('teacher', kwargs={'pk': request.user.id})
-        return HttpResponseRedirect(url)
-    
-    context = {'teacher':teachers}
-    return render(request, 'schoolmgt/teacher_form.html', context)
 
 
 
