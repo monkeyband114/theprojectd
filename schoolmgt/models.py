@@ -72,8 +72,10 @@ class Student(models.Model):
     address= models.CharField(max_length=120, blank=True, null=True)
     fathers_name = models.CharField(max_length=50, default='john')
     Mothers_name = models.CharField(max_length=50, default='janet')
+    bio = models.TextField(null=True, blank=True)
     status = models.BooleanField()
-    image = models.ImageField(null=True, default="testimon.png")
+    image = models.ImageField(null=True, default="testimon.png", upload_to="firststep")
+    unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
     
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"

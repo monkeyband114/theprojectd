@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from django.db.models import Sum, Avg
 import io
 import datetime
-from .forms import UserImage
+from .forms import TeacherImage, StudentImage
 
 
 def errorPage(request):
@@ -181,12 +181,12 @@ def teacherDetails(request):
 def teacherProfleAdd(request):
     user = request.user
     teachers = Teacher.objects.get(user=user)
-    form = UserImage(instance=teachers)
+    form = TeacherImage(instance=teachers)
     print(user)
     if request.method == "POST":
         date = request.POST.get('date_of_birth')
         format_date = date_converter(date)
-        form = UserImage(request.POST, request.FILES, instance=teachers)
+        form = TeacherImage(request.POST, request.FILES, instance=teachers)
         
         if form.is_valid():
             form.save()
@@ -195,7 +195,7 @@ def teacherProfleAdd(request):
             
             context = {'teacher':teachers, 'form':form, 'img_obj': imj_object}
         else:
-            form = UserImage()
+            form = TeacherImage()
             
         
         
@@ -295,15 +295,63 @@ def studentPage(request, pk):
 
 @login_required(login_url='login')
 def studentProfileAdd(request):
+    user = request.user
+    student = Student.objects.get(user=user)
+    form = StudentImage(instance=student)
+    basic = Basic.objects.all()
     
-    return render(request, 'schoolmgt/student_form.html')
+    if request.method == "POST":
+        date = request.POST.get('date_of_birth')
+        format_date = date_converter(date)
+        form = StudentImage(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()
+        
+        User.objects.filter(id=user.id).update(
+            first_name = request.POST.get('first_name'),
+            last_name = request.POST.get('last_name'),
+            gender = request.POST.get('gender'),
+            phone_number = request.POST.get('phone'),
+            email = request.POST.get('email'),
+        )
+        
+        Student.objects.filter(user=user).update(
+            birthday= format_date,
+            basic = Basic.objects.get(id= request.POST.get('basic')),
+            fathers_name = request.POST.get('fathers_name'),
+            Mothers_name = request.POST.get('Mothers_name'),
+            address = request.POST.get('address'),
+            bio = request.POST.get('bio'),
+        )
+        return redirect('student', pk=user.id)
+    context = {'users': user, 'student':student, 'form':form, 'basic':basic}
+    return render(request, 'schoolmgt/student_form.html', context)
     
 
 
-def studentResult(request):
+def studentResult(request, pk):
+    user = request.user
+    student = Student.objects.get(id=pk)
+    basic = student.basic
+    all_ass = Catestexam.objects.filter(student=student)
+    teacher = Teacher.objects.get(basic=basic)
+    subjects = teacher.subject.all()
+    
+    total = {}
+    
+    for subject in subjects:
+        ca_exam = Catestexam.objects.filter(student=student, subject=subject).aggregate(Sum("test_score"))
+        print(ca_exam)
+        subs = subject.name
+        total[subs] = ca_exam['test_score__sum']
     
     
-    return render(request, 'schoolmgt/ca_page.html')
+    
+    print(total)
+    
+    context = {'caexam':all_ass, 'student':student, 'total':total, 'subjects': subjects}
+    
+    return render(request, 'schoolmgt/result_fee.html', context)
 
 
 

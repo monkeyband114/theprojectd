@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+<!-- vastin  -->
+{% load static %}
+<!-- frepo on the move -->
+{% block content %}
+<!-- add code here  -->
+<div id="wrapper" class="wrapper bg-ash">
+  <!-- Header Menu Area Start Here -->
+  {% include 'schoolmgt/student_nav.html' %}
+  <!-- Header Menu Area End Here -->
+  <!-- Page Area Start Here -->
+  <div class="dashboard-page-one">
+    <!-- Sidebar Area Start Here -->
+    {% include 'schoolmgt/student_sidebar.html' %}
+    <!-- Sidebar Area End Here -->
+    <div class="dashboard-content-one">
+      <!-- Breadcubs Area Start Here -->
+      <div class="breadcrumbs-area">
+        <h3>Admin Dashboard</h3>
+        <ul>
+          <li>
+            {% if request.user.role == 'teacher' %}
+            <a href="{% url 'teacher' user.id %}"
+              >Accessment Details for {{student.user.first_name}}
+              {{student.user.last_name}}</a
+            >
+            {% else %}
+            <a href="{% url 'student' user.id %}"
+              >Accessment Details for {{student.user.first_name}}
+              {{student.user.last_name}}</a
+            >
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+      <!-- Breadcubs Area End Here -->
+      <div class="dashboard-summery-one mg-b-20">
+        <div class="row align-items-center">
+          <div class="col-6">
+            <div class="item-icon bg-light-green">
+              <i class="flaticon-classmates text-green"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="item-content">
+              <div class="item-title">First C.A</div>
+              <div class="item-number">
+                <span class="counter" data-num="{{subjects.count}}"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive student-table-box">
+        <table class="table display data-table text-nowrap">
+          <thead>
+            <tr>
+              <th>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input checkAll" />
+                  <label class="form-check-label">Roll</label>
+                </div>
+              </th>
+              <th>Photo</th>
+              <th>Subject</th>
+              <th>score</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for acess in caexam %} {% if acess.test_type == '1st C.A' %}
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" />
+                  <label class="form-check-label">#00{{acess.id}}</label>
+                </div>
+              </td>
+              <td class="text-center">
+                <img
+                  src="{% static 'img/figure/student2.png' %}"
+                  alt="student"
+                />
+              </td>
+              <td>{{acess.subject}}</td>
+              <td>{{acess.test_score}}</td>
+
+              <td>
+                <div class="dropdown">
+                  <a
+                    href="#"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span class="flaticon-more-button-of-three-dots"></span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-times text-orange-red"></i>Close</a
+                    >
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a
+                    >
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-redo-alt text-orange-peel"></i
+                      >Refresh</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endif %} {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="dashboard-summery-one mg-b-20">
+        <div class="row align-items-center">
+          <div class="col-6">
+            <div class="item-icon bg-light-green">
+              <i class="flaticon-classmates text-green"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="item-content">
+              <div class="item-title">Second C.A</div>
+              <div class="item-number">
+                <span class="counter" data-num="{{subjects.count}}"
+                  >150000</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive student-table-box">
+        <table class="table display data-table text-nowrap">
+          <thead>
+            <tr>
+              <th>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input checkAll" />
+                  <label class="form-check-label">Roll</label>
+                </div>
+              </th>
+              <th>Photo</th>
+              <th>Subject</th>
+              <th>score</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for acess in caexam %}
+            <!-- space -->
+            {% if acess.test_type == '2nd C.A' %}
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" />
+                  <label class="form-check-label">#00{{acess.id}}</label>
+                </div>
+              </td>
+              <td class="text-center">
+                <img
+                  src="{% static 'img/figure/student2.png' %}"
+                  alt="student"
+                />
+              </td>
+              <td>{{acess.subject}}</td>
+              <td>{{acess.test_score}}</td>
+
+              <td>
+                <div class="dropdown">
+                  <a
+                    href="#"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span class="flaticon-more-button-of-three-dots"></span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-times text-orange-red"></i>Close</a
+                    >
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a
+                    >
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-redo-alt text-orange-peel"></i
+                      >Refresh</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endif %}
+            <!-- space -->
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="dashboard-summery-one mg-b-20">
+        <div class="row align-items-center">
+          <div class="col-6">
+            <div class="item-icon bg-light-green">
+              <i class="flaticon-classmates text-green"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="item-content">
+              <div class="item-title">Exams</div>
+              <div class="item-number">
+                <span class="counter" data-num="{{subjects.count}}"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive student-table-box">
+        <table class="table display data-table text-nowrap">
+          <thead>
+            <tr>
+              <th>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input checkAll" />
+                  <label class="form-check-label">Roll</label>
+                </div>
+              </th>
+              <th>Photo</th>
+              <th>Subject</th>
+              <th>score</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for acess in caexam %} {% if acess.test_type == 'Exams' %}
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" />
+                  <label class="form-check-label">#00{{acess.id}}</label>
+                </div>
+              </td>
+              <td class="text-center">
+                <img
+                  src="{% static 'img/figure/student2.png' %}"
+                  alt="student"
+                />
+              </td>
+              <td>{{acess.subject}}</td>
+              <td>{{acess.test_score}}</td>
+
+              <td>
+                <div class="dropdown">
+                  <a
+                    href="#"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span class="flaticon-more-button-of-three-dots"></span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-times text-orange-red"></i>Close</a
+                    >
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a
+                    >
+                    <a class="dropdown-item" href="#"
+                      ><i class="fas fa-redo-alt text-orange-peel"></i
+                      >Refresh</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endif %} {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="dashboard-summery-one mg-b-20">
+        <div class="row align-items-center">
+          <div class="col-6">
+            <div class="item-icon bg-light-green">
+              <i class="flaticon-classmates text-green"></i>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="item-content">
+              <a href="#"><div class="item-title">Result</div></a>
+              {% for key, value in total.items %}
+              <div class="item-number">
+                <h4 style="color: rgb(22, 7, 183)">{{key}}</h4>
+                <h6>{{value}}</h6>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="m-4 justify-center align-items-center">
+        {% if request.user.role == 'teacher' %}
+        <a
+          href="{% url 'caadd' student.id %}"
+          type="button"
+          class="btn-fill-lmd radius-4 text-light bg-true-v align-items-center"
+          fdprocessedid="8hv69m"
+        >
+          Add Test and Exams
+        </a>
+        {% else %}
+        <br />
+        {% endif %}
+      </div>
+
+      <!-- Student Table Area End Here -->
+      <footer class="footer-wrap-layout1">
+        <div class="copyright">
+          © Copyrights <a href="#">akkhor</a> 2019. All rights reserved.
+          Designed by
+          <a href="#">PsdBosS</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

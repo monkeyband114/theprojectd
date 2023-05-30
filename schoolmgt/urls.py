@@ -13,8 +13,10 @@ urlpatterns = [
     path('teaher-details/', views.teacherDetails, name='teacher-details'),
     path('ca-add/<str:pk>', views.caadd, name='caadd'),
     path('create-teacher/', views.teacherProfleAdd, name="teacher-add"),
-    path('studentpage/<str:pk>/', views.studentPage, name='student'),
     path('teacherpage/<str:pk>/', views.teacherPage, name='teacher'),
     path('capage/<str:pk>/', views.cadetails, name='capage'),
+    path('studentpage/<str:pk>/', views.studentPage, name='student'),
+    path('update-student/', views.studentProfileAdd, name='student-add'),
+    path('Result&fees/<str:pk>/', views.studentResult, name='results'),
     
 ] 

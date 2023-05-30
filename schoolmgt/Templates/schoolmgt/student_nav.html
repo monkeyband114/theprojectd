@@ -58,11 +58,16 @@
           aria-expanded="false"
         >
           <div class="admin-title">
-            <h5 class="item-title">Stevne Zone</h5>
-            <span>Admin</span>
+            <h5 class="item-title">
+              {{student.user.first_name}} {{student.user.last_name}}
+            </h5>
+            <span>{{student.user.role}}</span>
           </div>
-          <div class="admin-img">
-            <img src="img/figure/admin.jpg" alt="Admin" />
+          <div
+            class="admin-img"
+            style="width: 35px; height: 35px; object-fit: contain"
+          >
+            <img src="{{student.image.url}}" alt="Admin" />
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
@@ -86,12 +91,12 @@
                 >
               </li>
               <li>
-                <a href="#"
+                <a href="{% url 'student-add' %}"
                   ><i class="flaticon-gear-loading"></i>Account Settings</a
                 >
               </li>
               <li>
-                <a href="login.html"
+                <a href="{% url 'logout' %}"
                   ><i class="flaticon-turn-off"></i>Log Out</a
                 >
               </li>
@@ -167,7 +172,7 @@
             </div>
             <div class="media">
               <div class="item-img bg-violet-blue">
-                <img src="img/figure/student11.png" alt="img" />
+                <img src="img/figure/student13.png" alt="img" />
               </div>
               <div class="media-body space-sm">
                 <div class="item-title">

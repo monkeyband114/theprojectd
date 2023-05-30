@@ -10,9 +10,13 @@ class MyUserStartForm(UserCreationForm):
         fields = ['first_name', 'last_name', 'gender', 'email', 'phone_number', 'role', 'password1', 'password2']
   
   
-class UserImage(ModelForm):  
+class TeacherImage(ModelForm):  
     class Meta:  
         model = Teacher
         fields = ['image']
 
 
+class StudentImage(ModelForm):
+    class Meta:
+        model = Student
+        fields = ['image']

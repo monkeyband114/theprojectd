@@ -80,7 +80,6 @@
               <div class="col-xl-3 col-lg-6 col-12 form-group">
                 <label>Subjects</label>
                 <select name="subject" class="select2">
-                  <option value="">Please Select Subject *</option>
                   {% for subject in subjects %}
                   <option value="{{subject.id}}">{{subject.name}}</option>
                   {% endfor %}
