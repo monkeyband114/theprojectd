@@ -145,9 +145,20 @@ class Results(models.Model):
     result_score = models.IntegerField(blank=False, null=False)
    
 
-class Notice (models.Model):
+class Notice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     to = models.CharField(max_length=50, choices=ROLE_CHOICES)
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    
+class Chat(models.Model):
+    admin = models.ForeignKey(User)
+    participants = models.ManyToManyField(User, related_name='chats')
+    created = models.DateTimeField(auto_now_add=True)
+
+class Message(models.Model):
+    user = models.ForeignKey(User)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
+    created = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(max_length=500) # what length you want
