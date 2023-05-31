@@ -60,6 +60,14 @@
             {% csrf_token %}
             <div class="row">
               <div class="col-xl-3 col-lg-6 col-12 form-group">
+                <label>Subjects</label>
+                <select name="subject" class="select2">
+                  {% for subject in subjects %}
+                  <option value="{{subject.id}}">{{subject.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-xl-3 col-lg-6 col-12 form-group">
                 <label>Test Type</label>
                 <select name="test_type" class="select2">
                   <option value="">Please Select Test Type *</option>
@@ -76,14 +84,6 @@
                   placeholder=""
                   class="form-control"
                 />
-              </div>
-              <div class="col-xl-3 col-lg-6 col-12 form-group">
-                <label>Subjects</label>
-                <select name="subject" class="select2">
-                  {% for subject in subjects %}
-                  <option value="{{subject.id}}">{{subject.name}}</option>
-                  {% endfor %}
-                </select>
               </div>
               <div class="col-12 form-group mg-t-8">
                 <button

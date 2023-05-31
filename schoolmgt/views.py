@@ -132,12 +132,13 @@ def createProfle(request):
 
 def teacherPage(request, pk):
     user = request.user
+    role = user.role
     male_count = 0
     female_count = 0
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     q1 = request.GET.get('q1') if request.GET.get('q1') != None else ''
     q2 = request.GET.get('q2') if request.GET.get('q2') != None else ''
-    print(f"you queryset is: {q1}")
+    notice = Notice.objects.all().filter(to=role)
     users = User.objects.get(id=pk)
     
     teacher, obj = Teacher.objects.get_or_create(
@@ -146,11 +147,24 @@ def teacherPage(request, pk):
     subject = teacher.subject.all()
     basic = teacher.basic
     
-    students = Student.objects.filter(
-        Q(user__first_name__icontains=q1)|
-        Q(user__last_name__icontains=q1)|
-        Q(user__phone_number__icontains=q2)
+    students = Student.objects.all().filter(
+            basic=basic
         )
+    
+    if q1 is '':
+        students_list = Student.objects.all().filter(
+            basic=basic
+        )
+    else:
+        students_list = Student.objects.filter(
+        Q(user__first_name__icontains=q1)|
+        Q(user__last_name__icontains=q1)
+        )
+    
+    
+    print(f"you queryset is: {q1}")
+    print(f"Students are: {students}")
+    
     
     if not Teacher.objects.filter(user=user).exists():
         return redirect('profile')
@@ -171,7 +185,8 @@ def teacherPage(request, pk):
         'female': female_count
     }
     
-    context ={'teacher':teacher, 'user':users, 'basic':basic, 'students':students, 'data':data, 'subject': subject}
+    context ={'teacher':teacher, 'user':users, 'basic':basic, 'notices':notice, 'students':students, 
+              'student_list':students_list, 'data':data, 'subject': subject, 'q1':q1}
     return render(request, 'schoolmgt/teacherpage.html', context)
 
 
@@ -222,6 +237,16 @@ def teacherProfleAdd(request):
     return render(request, 'schoolmgt/teacher_form.html', context)
 
 
+
+@login_required(login_url='login')
+def teacherNotice(request):
+    user = request.user
+    role = user.role
+    notice = Notice.objects.all().filter(to=role)
+    
+    context = {'notices':notice, 'user':user}
+    return render(request, 'schoolmgt/teacher_notice.html', context)
+    
 
 def cadetails(request, pk):
     user = request.user
@@ -352,7 +377,9 @@ def studentProfileAdd(request):
         return redirect('student', pk=user.id)
     context = {'users': user, 'student':student, 'form':form, 'basic':basic}
     return render(request, 'schoolmgt/student_form.html', context)
-    
+
+
+
 login_required(login_url='login')
 def studentResult(request, pk):
     user = request.user

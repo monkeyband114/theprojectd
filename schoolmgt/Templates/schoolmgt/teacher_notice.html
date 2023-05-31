@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+<!-- vastin  -->
+{% load static %}
+<!-- frepo on the move -->
+{% block content %}
+<!-- add code here  -->
+
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+  <!-- Header Menu Area Start Here -->
+  {% include 'schoolmgt/admin_nav.html' %}
+  <!-- Header Menu Area End Here -->
+  <!-- Page Area Start Here -->
+  <div class="dashboard-page-one">
+    <!-- Sidebar Area Start Here -->
+    {% include 'schoolmgt/teacher_sidebar.html' %}
+    <!-- Sidebar Area End Here -->
+
+    {% include 'schoolmgt/notice_tem.html' %}
+  </div>
+</div>
+
+{% endblock %}
