@@ -8,7 +8,7 @@ from . models import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import matplotlib.pyplot as plt
-from django.db.models import Sum, Avg
+from django.db.models import Sum, Avg, Q
 import io
 import datetime
 from .forms import TeacherImage, StudentImage
@@ -134,6 +134,10 @@ def teacherPage(request, pk):
     user = request.user
     male_count = 0
     female_count = 0
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    q1 = request.GET.get('q1') if request.GET.get('q1') != None else ''
+    q2 = request.GET.get('q2') if request.GET.get('q2') != None else ''
+    print(f"you queryset is: {q1}")
     users = User.objects.get(id=pk)
     
     teacher, obj = Teacher.objects.get_or_create(
@@ -141,7 +145,12 @@ def teacherPage(request, pk):
             )
     subject = teacher.subject.all()
     basic = teacher.basic
-    students = Student.objects.all().filter(basic=basic)
+    
+    students = Student.objects.filter(
+        Q(user__first_name__icontains=q1)|
+        Q(user__last_name__icontains=q1)|
+        Q(user__phone_number__icontains=q2)
+        )
     
     if not Teacher.objects.filter(user=user).exists():
         return redirect('profile')
@@ -222,18 +231,31 @@ def cadetails(request, pk):
     subjects = teacher.subject.all()
     
     total = {}
-    
     for subject in subjects:
         ca_exam = Catestexam.objects.filter(student=student, subject=subject).aggregate(Sum("test_score"))
-        print(ca_exam)
         subs = subject.name
         total[subs] = ca_exam['test_score__sum']
     
+    tots = 0
+    if None in total.values():
+       tots = 0 
+    else:
+        tots = sum(total.values())
+        
+        
+    Total.objects.update_or_create(
+        student=student,
+        basic = teacher.basic,
+        defaults={'total': tots}
+    )
     
+    result = Total.objects.get(student=student)
     
-    print(total)
+    dicts = Total.objects.all().filter(basic=teacher.basic)
     
-    context = {'caexam':all_ass, 'student':student, 'total':total, 'subjects': subjects}
+    print(dicts)
+    
+    context = {'caexam':all_ass, 'student':student, 'total':total, 'subjects': subjects, 'sum':result}
     return render(request, 'schoolmgt/ca_page.html', context)
 
 
@@ -288,8 +310,12 @@ def studentPage(request, pk):
         
     )
     
+    basic = student.basic
+    all_ass = Catestexam.objects.filter(student=student)
     
-    context = {'student':student}
+    
+    
+    context = {'student':student, 'results':all_ass}
     return render(request, 'schoolmgt/student_page.html', context)
 
 
@@ -327,8 +353,7 @@ def studentProfileAdd(request):
     context = {'users': user, 'student':student, 'form':form, 'basic':basic}
     return render(request, 'schoolmgt/student_form.html', context)
     
-
-
+login_required(login_url='login')
 def studentResult(request, pk):
     user = request.user
     student = Student.objects.get(id=pk)
@@ -341,13 +366,8 @@ def studentResult(request, pk):
     
     for subject in subjects:
         ca_exam = Catestexam.objects.filter(student=student, subject=subject).aggregate(Sum("test_score"))
-        print(ca_exam)
         subs = subject.name
         total[subs] = ca_exam['test_score__sum']
-    
-    
-    
-    print(total)
     
     context = {'caexam':all_ass, 'student':student, 'total':total, 'subjects': subjects}
     

@@ -57,8 +57,10 @@
           aria-expanded="false"
         >
           <div class="admin-title">
-            <h5 class="item-title">{{teacher.name}}</h5>
-            <span>{{teacher.user.first_name}}</span>
+            <h5 class="item-title">
+              {{teacher.user.first_name}} {{teacher.user.last_name}}
+            </h5>
+            <span>{{teacher.user.role}}</span>
           </div>
           <div style="width: 35px; height: 35px" class="admin-img">
             <img src="{{teacher.image.url}}" alt="{{teacher.user.last_name}}" />

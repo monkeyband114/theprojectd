@@ -68,12 +68,12 @@ class Basic(models.Model):
 class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True )
-    birthday = models.DateField()
+    birthday = models.DateField(null=True)
     address= models.CharField(max_length=120, blank=True, null=True)
     fathers_name = models.CharField(max_length=50, default='john')
     Mothers_name = models.CharField(max_length=50, default='janet')
     bio = models.TextField(null=True, blank=True)
-    status = models.BooleanField()
+    status = models.BooleanField(null=True)
     image = models.ImageField(null=True, default="testimon.png", upload_to="firststep")
     unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
     
@@ -127,20 +127,27 @@ class Catestexam(models.Model):
     subject = models.ForeignKey(SubjectB, related_name='subject', on_delete=models.CASCADE, blank=False)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
     test_score = models.IntegerField(blank=False)
-    
+    date_add = models.DateField(auto_now_add=True)
     
     def __str__(self) -> str:
         return f"{self.test_type} for {self.student.user.first_name} in {self.subject}"
 
 class Total(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
-    subject = models.ForeignKey(SubjectB, on_delete=models.CASCADE, blank=False)
-    total = models.IntegerField(blank=False)
+    basic = models.ForeignKey(Basic, on_delete=models.CASCADE, blank=False, null=True)
+    total = models.IntegerField(blank=False, null=True)
     
-
+    def __str__(self) -> str:
+        return f"Total for {self.student}:{self.total} "
     
 class Results(models.Model):
     Student=models.ForeignKey(Student, on_delete=models.CASCADE, blank=False)
     result_score = models.IntegerField(blank=False, null=False)
    
-    
+
+class Notice (models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    to = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    body = models.TextField()
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)

@@ -289,10 +289,14 @@
               <a href="#"><div class="item-title">Result</div></a>
               {% for key, value in total.items %}
               <div class="item-number">
-                <h4 style="color: rgb(22, 7, 183)">{{key}}</h4>
+                <h4 style="color: rgb(7, 93, 146)">{{key}}</h4>
                 <h6>{{value}}</h6>
               </div>
               {% endfor %}
+              <div class="item-number">
+                <h4 style="color: rgb(3, 32, 50)">Total</h4>
+                <h6>{{sum.total}}</h6>
+              </div>
             </div>
           </div>
         </div>

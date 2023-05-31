@@ -301,14 +301,14 @@
         </div>
       </div>
       <div class="m-4 justify-center align-items-center">
-        {% if request.user.role == 'teacher' %}
+        {% if request.user.role == 'student' %}
         <a
-          href="{% url 'caadd' student.id %}"
+          href="#"
           type="button"
           class="btn-fill-lmd radius-4 text-light bg-true-v align-items-center"
           fdprocessedid="8hv69m"
         >
-          Add Test and Exams
+          Print Result
         </a>
         {% else %}
         <br />

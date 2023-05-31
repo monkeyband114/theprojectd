@@ -3,7 +3,11 @@
   <div class="mobile-sidebar-header d-md-none">
     <div class="header-logo">
       <a href="{% url 'teacher' user.id %}"
-        ><img src="img/logo1.png" alt="logo"
+        ><img
+          src="{% static 'images/firstlogo.png' %}"
+          alt="logo"
+          width="55px"
+          height="55px"
       /></a>
     </div>
   </div>
