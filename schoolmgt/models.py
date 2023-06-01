@@ -53,6 +53,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f"{self.first_name} {self.last_name} : {self.role}, is_approved: {self.is_approved}"
     
+class Fees(models.Model):
+    basic = models.CharField(max_length=100)
+    Fee = models.IntegerField() 
+    
 class SubjectB(models.Model):
     name = models.CharField(max_length=200)
     
@@ -61,7 +65,8 @@ class SubjectB(models.Model):
 
 class Basic(models.Model):
     basic_no = models.CharField(max_length=50)
-    
+    fee = models.ManyToManyField(Fees, related_name='Fees', blank=True)
+    subject = models.ManyToManyField(SubjectB, related_name='Subject', blank=True)
     
     def __str__(self) -> str:
         return self.basic_no
@@ -91,10 +96,8 @@ class Student(models.Model):
     
 class Teacher(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    #midle_name = models.CharField(max_length=100, blank=True)
     basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True)
     salary = models.IntegerField(blank=True, null=True)
-    subject = models.ManyToManyField(SubjectB, related_name='Subject', blank=True)
     address = models.CharField(max_length=100,  blank=True, null=True)
     qualifications = models.CharField(max_length=100, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
@@ -109,8 +112,6 @@ class Teacher(models.Model):
     
 class Administration(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True)
-    salary = models.IntegerField(blank=True, null=True)
     address = models.CharField(max_length=100,  blank=True, null=True)
     qualifications = models.CharField(max_length=100, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
@@ -121,10 +122,11 @@ class Administration(models.Model):
     
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"
-class Fees(models.Model):
-    basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True)
-    Fee = models.IntegerField() 
     
+    
+
+
+
 
 class Attendance(models.Model):
     basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True)
@@ -159,7 +161,9 @@ class Results(models.Model):
 class Notice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     to = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    title = models.TextField(max_length=150)
     body = models.TextField()
+    data = models.DateField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     

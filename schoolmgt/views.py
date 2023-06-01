@@ -146,10 +146,32 @@ def adminPage(request, pk):
     if user.is_staff == False:
         return redirect('awating')
     
+    else:
+        admin, obj = Administration.objects.get_or_create(
+            user=user,
+        )
     
-        
-        
-    return render(request, 'schoolmgt/admin_page.html')
+    students_true = Student.objects.all()
+    student_false = User.objects.all().filter(is_approved=False, role='student')
+    
+    notice = Notice.objects.all()
+    
+    teacher_true = Teacher.objects.all()
+    teacher_false = User.objects.all().filter(is_approved=False, role='teacher')
+    
+    
+    
+    context={'students': students_true, 'admins':admin, 'teachers':teacher_true, 'notices':notice}
+    return render(request, 'schoolmgt/admin_page.html',  context)
+
+def adminStudent(request):
+    
+    student_list = Student.objects.all() 
+    
+    
+    
+    context = {'student_list':student_list}
+    return render(request, 'schoolmgt/admin_student.html', context)
 
 
 def parrentPage(request, pk):
@@ -178,8 +200,12 @@ def teacherPage(request, pk):
     teacher, obj = Teacher.objects.get_or_create(
                 user = user,
             )
-    subject = teacher.subject.all()
+    
+    
     basic = teacher.basic
+    subject = basic.subject
+    
+    print(f"all subjects: {subject}")
     
     students = Student.objects.all().filter(
             basic=basic
@@ -222,8 +248,6 @@ def teacherPage(request, pk):
     context ={'teacher':teacher, 'user':users, 'basic':basic, 'notices':notice, 'students':students, 
               'student_list':students_list, 'data':data, 'subject': subject, 'q1':q1, 'messagesin':message}
     return render(request, 'schoolmgt/teacherpage.html', context)
-
-
 
 
 def teacherDetails(request):
@@ -287,7 +311,13 @@ def cadetails(request, pk):
     student = Student.objects.get(id=pk)
     all_ass = Catestexam.objects.filter(student=student)
     teacher = Teacher.objects.get(user=user)
-    subjects = teacher.subject.all()
+    base = teacher.basic.basic_no
+    
+    sub = Basic.objects.get(basic_no=base)
+    
+    subjects = sub.subject.all()
+    
+    print(f"All subjects: {subjects}")
     
     total = {}
     for subject in subjects:
@@ -337,13 +367,15 @@ def caadd(request, pk):
     stud = student.basic
     teacher = Teacher.objects.get(basic=stud)
     print(teacher)
-    sub = teacher.subject.all()
-    print(sub)
+    sub = Basic.objects.get(basic_no=teacher.basic.basic_no)
+    subject = sub.subject.all()
     
-    subject = []
+    print(f"all subs: {subject}")
     
-    for subs in sub:
-        subject += SubjectB.objects.filter(name=subs)
+    # subject = []
+    
+    # for subs in sub:
+    #     subject += SubjectB.objects.filter(name=subs)
     
     
     if request.method == 'POST':
@@ -421,7 +453,11 @@ def studentResult(request, pk):
     basic = student.basic
     all_ass = Catestexam.objects.filter(student=student)
     teacher = Teacher.objects.get(basic=basic)
-    subjects = teacher.subject.all()
+    base = teacher.basic.basic_no
+    
+    sub = Basic.objects.get(basic_no=base)
+    
+    subjects = sub.subject.all()
     
     total = {}
     

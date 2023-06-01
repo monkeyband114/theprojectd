@@ -6,7 +6,7 @@
 <!-- Preloader End Here -->
 <div id="wrapper" class="wrapper bg-ash">
   <!-- Header Menu Area Start Here -->
-  {% include 'schoolmgt/admin_nav.html' %}
+  {% include 'schoolmgt/teacher_nav.html' %}
   <!-- Header Menu Area End Here -->
   <!-- Page Area Start Here -->
   <div class="dashboard-page-one">
@@ -33,99 +33,48 @@
               <h3>Edit Teacher</h3>
             </div>
             <div class="dropdown">
-              <a
-                class="dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-                >...</a
-              >
+              <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
 
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#"
-                  ><i class="fas fa-times text-orange-red"></i>Close</a
-                >
-                <a class="dropdown-item" href="#"
-                  ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a
-                >
-                <a class="dropdown-item" href="#"
-                  ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a
-                >
+                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
               </div>
             </div>
           </div>
-          <form
-            class="new-added-form"
-            method="POST"
-            enctype="multipart/form-data"
-          >
+          <form class="new-added-form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
               <div class="col-xl-3 col-lg-6 col-12 form-group">
                 <label>Address</label>
-                <input
-                  id="address"
-                  name="address"
-                  value="{{teacher.address}}"
-                  type="text"
-                  placeholder=""
-                  class="form-control"
-                />
+                <input id="address" name="address" value="{{teacher.address}}" type="text" placeholder=""
+                  class="form-control" />
               </div>
               <div class="col-xl-3 col-lg-6 col-12 form-group">
                 <label>Qualification*</label>
-                <input
-                  id="qualifications"
-                  value="{{teacher.qualifications}}"
-                  name="qualifications"
-                  type="text"
-                  placeholder=""
-                  class="form-control"
-                />
+                <input id="qualifications" value="{{teacher.qualifications}}" name="qualifications" type="text"
+                  placeholder="" class="form-control" />
               </div>
               <div class="col-xl-3 col-lg-6 col-12 form-group">
                 <label>Date Of Birth *</label>
-                <input
-                  id="date_of_birth"
-                  value="{{teacher.birthday}}"
-                  name="date_of_birth"
-                  type="text"
-                  placeholder="yyyy-mm-dd"
-                  class="form-control air-datepicker"
-                />
+                <input id="date_of_birth" value="{{teacher.birthday}}" name="date_of_birth" type="text"
+                  placeholder="yyyy-mm-dd" class="form-control air-datepicker" />
                 <i class="far fa-calendar-alt"></i>
               </div>
               <div class="col-lg-6 col-12 form-group">
                 <label>Short BIO</label>
-                <textarea
-                  class="textarea form-control"
-                  value="{{teacher.bio}}"
-                  name="bio"
-                  id="form-message"
-                  placeholder=""
-                  cols="10"
-                  rows="9"
-                ></textarea>
+                <textarea class="textarea form-control" value="{{teacher.bio}}" name="bio" id="form-message"
+                  placeholder="" cols="10" rows="9"></textarea>
               </div>
               <div class="col-lg-6 col-12 form-group mg-t-30">
-                <label class="text-dark-medium"
-                  >Upload Student Photo (150px X 150px)</label
-                >
+                <label class="text-dark-medium">Upload Student Photo (150px X 150px)</label>
                 {{form}}
               </div>
               <div class="col-12 form-group mg-t-8">
-                <button
-                  type="submit"
-                  class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
-                  value="teacher-add"
-                >
+                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" value="teacher-add">
                   Save
                 </button>
-                <button
-                  type="reset"
-                  class="btn-fill-lg bg-blue-dark btn-hover-yellow"
-                >
+                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">
                   Reset
                 </button>
               </div>
