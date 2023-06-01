@@ -110,14 +110,15 @@
         >
           <i class="far fa-envelope"></i>
           <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-          <span>5</span>
+          <span>{{messagesin.count}}</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-right">
           <div class="item-header">
-            <h6 class="item-title">05 Message</h6>
+            <h6 class="item-title">{{messagesin.count}} Message</h6>
           </div>
           <div class="item-content">
+            {% for messagin in messages %}
             <div class="media">
               <div class="item-img bg-skyblue author-online">
                 <img src="img/figure/student11.png" alt="img" />
@@ -125,63 +126,19 @@
               <div class="media-body space-sm">
                 <div class="item-title">
                   <a href="#">
-                    <span class="item-name">Maria Zaman</span>
-                    <span class="item-time">18:30</span>
+                    <span class="item-name"
+                      >{{messagein.user.first_name}}
+                      {{messagein.user.last_name}}</span
+                    >
+                    <span class="item-time"
+                      >{{messagein.created|timesince}}</span
+                    >
                   </a>
                 </div>
-                <p>
-                  What is the reason of buy this item. Is it usefull for me.....
-                </p>
+                <p>{{message.text}}</p>
               </div>
             </div>
-            <div class="media">
-              <div class="item-img bg-yellow author-online">
-                <img src="img/figure/student12.png" alt="img" />
-              </div>
-              <div class="media-body space-sm">
-                <div class="item-title">
-                  <a href="#">
-                    <span class="item-name">Benny Roy</span>
-                    <span class="item-time">10:35</span>
-                  </a>
-                </div>
-                <p>
-                  What is the reason of buy this item. Is it usefull for me.....
-                </p>
-              </div>
-            </div>
-            <div class="media">
-              <div class="item-img bg-pink">
-                <img src="img/figure/student13.png" alt="img" />
-              </div>
-              <div class="media-body space-sm">
-                <div class="item-title">
-                  <a href="#">
-                    <span class="item-name">Steven</span>
-                    <span class="item-time">02:35</span>
-                  </a>
-                </div>
-                <p>
-                  What is the reason of buy this item. Is it usefull for me.....
-                </p>
-              </div>
-            </div>
-            <div class="media">
-              <div class="item-img bg-violet-blue">
-                <img src="img/figure/student11.png" alt="img" />
-              </div>
-              <div class="media-body space-sm">
-                <div class="item-title">
-                  <a href="#">
-                    <span class="item-name">Joshep Joe</span>
-                    <span class="item-time">12:35</span>
-                  </a>
-                </div>
-                <p>
-                  What is the reason of buy this item. Is it usefull for me.....
-                </p>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </li>

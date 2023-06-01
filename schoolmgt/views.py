@@ -93,6 +93,14 @@ def loginpage(request):
                 else:
                     url = reverse('student', kwargs={'pk': request.user.id})
                     return HttpResponseRedirect(url)
+            elif user.role == 'admin':
+                if user.is_approved == False:
+                    return redirect('awating')
+                elif  user.is_approved == True & user.is_staff == True:
+                    url = reverse('minister', kwargs={'pk': request.user.id})
+                    return HttpResponseRedirect(url)
+                else:
+                    return redirect('awating')
             else:
                 return redirect('home')
         else:
@@ -120,11 +128,36 @@ def awaitingPage(request):
         elif user.is_approved == True & user.role == 'student':
              url = reverse('student', kwargs={'pk': request.user.id})
              return HttpResponseRedirect(url)
+        elif user.is_approved == True & user.role == 'parent':
+            url = reverse('parent', kwargs={'pk': request.user.id})
+            return HttpResponseRedirect(url)
+        elif user.is_approved == True & user.role == 'admin' & user.is_staff == True:
+            url = reverse('minister', kwargs={'pk': request.user.id})
+            return HttpResponseRedirect(url)
     except:
         messages.error(request, 'Account still pending')
         
     return render(request, 'schoolmgt/awating.html')
+
+
+def adminPage(request, pk):
+    user = User.objects.get(id=pk)
     
+    if user.is_staff == False:
+        return redirect('awating')
+    
+    
+        
+        
+    return render(request, 'schoolmgt/admin_page.html')
+
+
+def parrentPage(request, pk):
+    
+    return render(request, 'schoolmgt/parent_page.html')
+
+
+
 
 def createProfle(request):
     
@@ -141,6 +174,7 @@ def teacherPage(request, pk):
     notice = Notice.objects.all().filter(to=role)
     users = User.objects.get(id=pk)
     
+    message = Message.objects.all().filter(recipeient=user)
     teacher, obj = Teacher.objects.get_or_create(
                 user = user,
             )
@@ -186,7 +220,7 @@ def teacherPage(request, pk):
     }
     
     context ={'teacher':teacher, 'user':users, 'basic':basic, 'notices':notice, 'students':students, 
-              'student_list':students_list, 'data':data, 'subject': subject, 'q1':q1}
+              'student_list':students_list, 'data':data, 'subject': subject, 'q1':q1, 'messagesin':message}
     return render(request, 'schoolmgt/teacherpage.html', context)
 
 

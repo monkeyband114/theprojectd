@@ -19,6 +19,8 @@ gen_chices = (
 ROLE_CHOICES = (
     ("teacher", "teacher"),
     ("student", "student"),
+    ("admin", "admin"),
+    ("parent", "parent")
 )
 
 ACESSMENT = (
@@ -73,7 +75,7 @@ class Student(models.Model):
     fathers_name = models.CharField(max_length=50, default='john')
     Mothers_name = models.CharField(max_length=50, default='janet')
     bio = models.TextField(null=True, blank=True)
-    status = models.BooleanField(null=True)
+    status = models.BooleanField(default=True)
     image = models.ImageField(null=True, default="testimon.png", upload_to="firststep")
     unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
     
@@ -85,12 +87,6 @@ class Student(models.Model):
         genders = self.user_set.all()
         
         return genders
-
-    
-class Charts(models.Model):
-        basic = basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True )
-        image = models.ImageField(null=True, default="testimon.png")
-    
     
     
 class Teacher(models.Model):
@@ -110,6 +106,21 @@ class Teacher(models.Model):
     def __str__(self) -> str:
         return f"{self.user.first_name} uploaded to: {self.image.url}"
     
+    
+class Administration(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    basic = models.OneToOneField(Basic, on_delete=models.SET_NULL, blank=True, null=True)
+    salary = models.IntegerField(blank=True, null=True)
+    address = models.CharField(max_length=100,  blank=True, null=True)
+    qualifications = models.CharField(max_length=100, blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
+    bio = models.TextField(max_length=400, blank=True)
+    image = models.ImageField(null=True, default="testimon.png", upload_to="firststep")
+    unique_id = models.CharField(default=uuid.uuid4().hex[:5].upper(), max_length=10, editable=False)
+    
+    
+    def __str__(self) -> str:
+        return f"{self.user.first_name} {self.user.last_name}"
 class Fees(models.Model):
     basic = models.ForeignKey(Basic, on_delete=models.SET_NULL, blank=True, null=True)
     Fee = models.IntegerField() 
@@ -152,13 +163,18 @@ class Notice(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
-class Chat(models.Model):
-    admin = models.ForeignKey(User)
-    participants = models.ManyToManyField(User, related_name='chats')
-    created = models.DateTimeField(auto_now_add=True)
+    def __str__(self) -> str:
+        return f"from {self.user.first_name} to: {self.to}s"
+   
 
 class Message(models.Model):
-    user = models.ForeignKey(User)
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipeient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
     created = models.DateTimeField(auto_now_add=True)
-    text = models.TextField(max_length=500) # what length you want
+    text = models.TextField(max_length=500)
+    
+    class Meta:
+        ordering = ['created']
+        
+    def __str__(self):
+        return f"from {self.user.first_name}, to: {self.recipeient.first_name}"# what length you want

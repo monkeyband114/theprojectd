@@ -19,4 +19,6 @@ urlpatterns = [
     path('update-student/', views.studentProfileAdd, name='student-add'),
     path('Result&fees/<str:pk>/', views.studentResult, name='results'),
     path('notice-page/', views.teacherNotice, name='teacher-notice'),
+    path('admin-page/<str:pk>/', views.adminPage, name="minister"), 
+    path('parrent-page/', views.parrentPage, name='parent'),
 ] 
