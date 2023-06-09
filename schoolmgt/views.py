@@ -201,9 +201,8 @@ def teacherPage(request, pk):
                 user = user,
             )
     
-    
+    subject = teacher.basic.subject
     basic = teacher.basic
-    subject = basic.subject
     
     print(f"all subjects: {subject}")
     

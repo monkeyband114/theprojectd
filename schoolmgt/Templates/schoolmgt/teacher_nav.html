@@ -17,13 +17,8 @@
     </div>
   </div>
   <div class="d-md-none mobile-nav-bar">
-    <button
-      class="navbar-toggler pulse-animation"
-      type="button"
-      data-toggle="collapse"
-      data-target="#mobile-navbar"
-      aria-expanded="false"
-    >
+    <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar"
+      aria-expanded="false">
       <i class="far fa-arrow-alt-circle-down"></i>
     </button>
     <button type="button" class="navbar-toggler sidebar-toggle-mobile">
@@ -39,23 +34,13 @@
               <span class="flaticon-search" aria-hidden="true"></span>
             </button>
           </span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Find Something . . ."
-          />
+          <input type="text" class="form-control" placeholder="Find Something . . ." />
         </div>
       </li>
     </ul>
     <ul class="navbar-nav">
       <li class="navbar-item dropdown header-admin">
-        <a
-          class="navbar-nav-link dropdown-toggle"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
           <div class="admin-title">
             <h5 class="item-title">
               {{teacher.user.first_name}} {{teacher.user.last_name}}
@@ -79,35 +64,20 @@
                 <a href="#"><i class="flaticon-list"></i>Task</a>
               </li>
               <li>
-                <a href="#"
-                  ><i
-                    class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"
-                  ></i
-                  >Message</a
-                >
+                <a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
               </li>
               <li>
-                <a href="#"
-                  ><i class="flaticon-gear-loading"></i>Account Settings</a
-                >
+                <a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a>
               </li>
               <li>
-                <a href="{% url 'logout' %}"
-                  ><i class="flaticon-turn-off"></i>Log Out</a
-                >
+                <a href="{% url 'logout' %}"><i class="flaticon-turn-off"></i>Log Out</a>
               </li>
             </ul>
           </div>
         </div>
       </li>
       <li class="navbar-item dropdown header-message">
-        <a
-          class="navbar-nav-link dropdown-toggle"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
           <i class="far fa-envelope"></i>
           <div class="item-title d-md-none text-16 mg-l-10">Message</div>
           <span>{{messagesin.count}}</span>
@@ -118,7 +88,7 @@
             <h6 class="item-title">{{messagesin.count}} Message</h6>
           </div>
           <div class="item-content">
-            {% for messagin in messages %}
+            {% for messagin in messagesin %}
             <div class="media">
               <div class="item-img bg-skyblue author-online">
                 <img src="img/figure/student11.png" alt="img" />
@@ -126,16 +96,12 @@
               <div class="media-body space-sm">
                 <div class="item-title">
                   <a href="#">
-                    <span class="item-name"
-                      >{{messagein.user.first_name}}
-                      {{messagein.user.last_name}}</span
-                    >
-                    <span class="item-time"
-                      >{{messagein.created|timesince}}</span
-                    >
+                    <span class="item-name">{{messagin.user.first_name}}
+                      {{messagin.user.last_name}}</span>
+                    <span class="item-time">{{messagin.created|timesince}}</span>
                   </a>
                 </div>
-                <p>{{message.text}}</p>
+                <p>{{messagin.text}}</p>
               </div>
             </div>
             {% endfor %}
@@ -143,13 +109,7 @@
         </div>
       </li>
       <li class="navbar-item dropdown header-notification">
-        <a
-          class="navbar-nav-link dropdown-toggle"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
           <i class="far fa-bell"></i>
           <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
           <span>8</span>
